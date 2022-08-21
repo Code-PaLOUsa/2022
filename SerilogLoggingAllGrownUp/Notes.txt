@@ -1,0 +1,38 @@
+https://softwareengineering.stackexchange.com/questions/312197/benefits-of-structured-logging-vs-basic-logging
+https://stackoverflow.com/questions/17106559/using-log4net-to-write-to-different-loggers
+https://serilog.net/
+https://github.com/serilog/serilog/wiki
+https://github.com/serilog/serilog/wiki/Writing-Log-Events
+https://github.com/serilog/serilog-sinks-file
+https://github.com/serilog/serilog/wiki/AppSettings
+https://github.com/serilog/serilog/wiki/Configuration-Basics
+https://github.com/serilog/serilog/wiki/Enrichment
+https://github.com/serilog/serilog-enrichers-environment
+https://stackoverflow.com/questions/24183244/serilog-machine-name-enricher-for-rolling-file-sink
+https://github.com/serilog/serilog/wiki/Configuration-Basics#enrichers
+https://github.com/datalust/seq-releases/issues/357
+https://github.com/serilog/serilog/wiki/AppSettings
+https://contrivedexample.com/2017/01/16/custom-serilog-sink-development/
+https://blog.codeship.com/how-to-understand-logs-with-logentries/
+
+
+Filters
+
+Events can be selectively logged by filtering. Filters are just predicates over LogEvent, with some common scenarios handled by the Matching class.
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.ColoredConsole()
+    .Filter.ByExcluding(Matching.WithProperty<int>("Count", p => p < 10))
+    .CreateLogger();
+
+
+Sub-loggers
+
+Sometimes a finer level of control over what is seen by a sink is necessary. For this, Serilog allows a full logging pipeline to act as a sink.
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.LiterateConsole()
+    .WriteTo.Logger(lc => lc
+        .Filter.ByIncludingOnly(...)
+        .WriteTo.RollingFile("log-{Date}.txt"))
+    .CreateLogger();
