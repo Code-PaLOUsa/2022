@@ -1,0 +1,21 @@
+az login
+
+# resource groups
+az group list --query [].name -o tsv
+az group list --query "[? contains(name,'dev')].name" -o tsv
+
+# keyvault
+az keyvault secret -h
+az keyvault secret list --vault-name sincmedia-dev-keyvault --query [].name -o tsv
+az keyvault secret show --vault-name sincmedia-dev-keyvault `
+  --name affiliatedata-connectionstring --query value -o tsv
+
+# enterprise applications
+az ad app list -h
+az ad app list --query [].[displayName,id] -o tsv
+az ad app list --display-name sincmedia-dev-app-client `
+  --query [].appRoles[].[displayName,description] -o table
+
+# service principals
+az ad sp -hv
+az ad sp list --query [].displayName
